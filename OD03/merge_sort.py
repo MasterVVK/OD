@@ -1,5 +1,8 @@
 #Сортировка слиянием
 
+comparison_count = 0
+
+
 def merge_sort(arr):
     if len(arr) <= 1:
         return arr
@@ -12,10 +15,12 @@ def merge_sort(arr):
 
 
 def merge(left, right):
+    global comparison_count
     sorted_list = []
     left_index, right_index = 0, 0
 
     while left_index < len(left) and right_index < len(right):
+        comparison_count += 1
         if left[left_index] < right[right_index]:
             sorted_list.append(left[left_index])
             left_index += 1
@@ -34,3 +39,4 @@ arr = [38, 27, 43, 3, 9, 82, 10]
 print("Исходный массив:", arr)
 sorted_arr = merge_sort(arr)
 print("Отсортированный массив:", sorted_arr)
+print(f"Количество сравнений: {comparison_count}")
