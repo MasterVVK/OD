@@ -1,4 +1,4 @@
-#Сортировка слиянием с классами 
+#Сортировка слиянием с классами
 class MergeSort:
     def __init__(self):
         self.comparison_count = 0
