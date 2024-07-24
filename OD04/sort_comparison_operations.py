@@ -1,6 +1,9 @@
-import time
 import random
 import matplotlib.pyplot as plt
+import sys
+
+# Увеличиваем максимальную глубину рекурсии
+sys.setrecursionlimit(2000)
 
 def bubble_sort(arr):
     comparisons = 0
@@ -12,7 +15,7 @@ def bubble_sort(arr):
             if arr[i] > arr[i + 1]:
                 arr[i], arr[i + 1] = arr[i + 1], arr[i]
                 swaps += 1
-    return arr, comparisons, swaps
+    return comparisons, swaps
 
 def selection_sort(arr):
     comparisons = 0
@@ -27,7 +30,7 @@ def selection_sort(arr):
         if min_index != i:
             arr[i], arr[min_index] = arr[min_index], arr[i]
             swaps += 1
-    return arr, comparisons, swaps
+    return comparisons, swaps
 
 def insertion_sort(arr):
     comparisons = 0
@@ -42,19 +45,26 @@ def insertion_sort(arr):
             swaps += 1
         arr[j + 1] = key
         comparisons += 1  # Для последнего сравнения в while
-    return arr, comparisons, swaps
+    return comparisons, swaps
+
+def median_of_three(arr):
+    first = arr[0]
+    middle = arr[len(arr) // 2]
+    last = arr[-1]
+    return sorted([first, middle, last])[1]
 
 def quick_sort(arr):
     comparisons = 0
     if len(arr) <= 1:
         return arr, comparisons
-    pivot = arr[0]
-    left = [x for x in arr[1:] if x < pivot]
-    right = [x for x in arr[1:] if x >= pivot]
+    pivot = median_of_three(arr)
+    left = [x for x in arr if x < pivot]
+    right = [x for x in arr if x > pivot]
+    middle = [x for x in arr if x == pivot]
     comparisons += len(arr) - 1
     left_sorted, left_comparisons = quick_sort(left)
     right_sorted, right_comparisons = quick_sort(right)
-    return left_sorted + [pivot] + right_sorted, comparisons + left_comparisons + right_comparisons
+    return left_sorted + middle + right_sorted, comparisons + left_comparisons + right_comparisons
 
 def merge_sort(arr):
     comparisons = 0
@@ -88,19 +98,19 @@ comparisons_merge = []
 # Пузырьковая сортировка (Средний случай)
 for size in sizes:
     arr = random.sample(range(size * 2), size)
-    _, comparisons, _ = bubble_sort(arr)
+    comparisons, _ = bubble_sort(arr)
     comparisons_bubble.append(comparisons)
 
 # Сортировка выбором (Средний случай)
 for size in sizes:
     arr = random.sample(range(size * 2), size)
-    _, comparisons, _ = selection_sort(arr)
+    comparisons, _ = selection_sort(arr)
     comparisons_selection.append(comparisons)
 
 # Сортировка вставками (Средний случай)
 for size in sizes:
     arr = random.sample(range(size * 2), size)
-    _, comparisons, _ = insertion_sort(arr)
+    comparisons, _ = insertion_sort(arr)
     comparisons_insertion.append(comparisons)
 
 # Быстрая сортировка (Средний случай)
@@ -117,11 +127,11 @@ for size in sizes:
 
 # Построение графика сравнений
 plt.figure(figsize=(12, 8))
-plt.plot(sizes, comparisons_bubble, label='Пузырьковая сортировка (O(n^2))')
-plt.plot(sizes, comparisons_selection, label='Сортировка выбором (O(n^2))')
-plt.plot(sizes, comparisons_insertion, label='Сортировка вставками (O(n^2))')
-plt.plot(sizes, comparisons_quick, label='Быстрая сортировка (O(n log n))')
-plt.plot(sizes, comparisons_merge, label='Сортировка слиянием (O(n log n))')
+plt.plot(sizes, comparisons_bubble, label='Пузырьковая сортировка (O(n^2))', marker='o', linestyle='-')
+plt.plot(sizes, comparisons_selection, label='Сортировка выбором (O(n^2))', marker='x', linestyle='--')
+plt.plot(sizes, comparisons_insertion, label='Сортировка вставками (O(n^2))', marker='s', linestyle='-.')
+plt.plot(sizes, comparisons_quick, label='Быстрая сортировка (O(n log n))', marker='d', linestyle=':')
+plt.plot(sizes, comparisons_merge, label='Сортировка слиянием (O(n log n))', marker='^', linestyle='-')
 plt.xlabel('Размер массива')
 plt.ylabel('Количество сравнений')
 plt.legend()
