@@ -1,6 +1,5 @@
-import time
-import matplotlib.pyplot as plt
 import random
+import matplotlib.pyplot as plt
 
 def bubble_sort(arr):
     n = len(arr)
@@ -12,9 +11,9 @@ def bubble_sort(arr):
             if arr[i] > arr[i + 1]:
                 arr[i], arr[i + 1] = arr[i + 1], arr[i]
                 swaps += 1
-    return arr, comparisons, swaps
+    return comparisons, swaps
 
-sizes = [10, 50, 100, 500, 1000]
+sizes = [10, 50, 100, 500, 1000, 2000, 3000]
 comparisons_best = []
 swaps_best = []
 comparisons_avg = []
@@ -25,21 +24,21 @@ swaps_worst = []
 # Лучший случай (уже отсортированный массив)
 for size in sizes:
     arr = list(range(size))
-    _, comparisons, swaps = bubble_sort(arr)
+    comparisons, swaps = bubble_sort(arr)
     comparisons_best.append(comparisons)
     swaps_best.append(swaps)
 
 # Средний случай (случайный массив)
 for size in sizes:
     arr = random.sample(range(size * 2), size)
-    _, comparisons, swaps = bubble_sort(arr)
+    comparisons, swaps = bubble_sort(arr)
     comparisons_avg.append(comparisons)
     swaps_avg.append(swaps)
 
 # Худший случай (обратный порядок)
 for size in sizes:
     arr = list(range(size, 0, -1))
-    _, comparisons, swaps = bubble_sort(arr)
+    comparisons, swaps = bubble_sort(arr)
     comparisons_worst.append(comparisons)
     swaps_worst.append(swaps)
 
